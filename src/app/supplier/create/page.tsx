@@ -1,4 +1,4 @@
-import Form from '@/components/ui/customer/Create-from'
+import Form from '@/components/ui/supplier/Create-from'
 
 const Page = () => {
     return (<div>

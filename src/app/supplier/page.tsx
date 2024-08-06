@@ -1,17 +1,17 @@
 import React from 'react'
-import { getCustomers } from './action'
+import { getsupplier } from './action'
 import { columns } from './column'
 import { DataTable } from './data-table'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Bread from '@/components/Bread'
 const page = async () => {
-    const data = await getCustomers()
+    const data = await getsupplier()
     return (
         <div className='p-20'>
             <Bread />
             <div>
-                <Link href={"/customer/create"}>
+                <Link href={"/supplier/create"}>
                     <Button>Add</Button>
                 </Link>
             </div>
