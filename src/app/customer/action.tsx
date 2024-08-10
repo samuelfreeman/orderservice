@@ -1,9 +1,10 @@
 import db from "../lib/db";
 import type { Customer } from "../types/type";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 export async function getCustomers(): Promise<Customer[]> {
     try {
+        unstable_noStore()
         const dbQuery = `SELECT * FROM customer`
         const customers = await db(dbQuery)
         console.log(customers)
@@ -28,7 +29,7 @@ export async function addCustomer(payload: State, formData: FormData): Promise<S
     try {
 console.log("inserting into the customer ")
 
-        const dbQuery = `INSERT INTO customer(name,email,phone) values($1,$2,$3)`
+        const dbQuery = `INSERT INTO customer(name,email,phone) values($1,$2,$3);`
         const name = formData.get('name') as string;
         const email = formData.get('email') as string;
         const phone = formData.get('phone') as string;

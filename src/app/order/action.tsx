@@ -1,9 +1,10 @@
 import db from "../lib/db";
 import type { Order } from "../types/type";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 export async function getOrders(): Promise<Order[]> {
     try {
+        unstable_noStore()
         const dbQuery = `
         SELECT 
           orders.id,
@@ -13,7 +14,7 @@ export async function getOrders(): Promise<Order[]> {
         FROM orders  
         JOIN customer ON orders.customerID = customer.id
         JOIN product ON orders.productID = product.id
-        ORDER BY orders.created_at DESC
+        ORDER BY orders.created_at DESC;
       `;
         const order = await db(dbQuery);
         console.log(order);
@@ -41,14 +42,14 @@ export async function addOrder(payload: State, formData: FormData): Promise<Stat
         const productID = formData.get('productID') as string;
 
         console.log(productID, customerID);
-        const params:any = [customerID, productID];
+        const params: any = [customerID, productID];
 
         const result = await db(dbQuery, params);
         console.log("order added", result);
         revalidatePath("/order");
     } catch (error) {
-        console.log("database error",error);
-        
+        console.log("database error", error);
+
     }
     redirect('/order');
 }
